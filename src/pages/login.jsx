@@ -23,9 +23,6 @@ import { Link as ReactRouterLink } from "react-router-dom";
 
 export default function LoginPage() {
     const [ showPassword, setShowPassword ] = useBoolean();
-    const handleShowPassword = () => {
-        setShowPassword.toggle();
-    }
 
   return (
     <Container maxW="container.md" bg="gray.50" h="100vh">
@@ -87,7 +84,7 @@ export default function LoginPage() {
                         variant='filled'
                       />
                       <InputRightElement pointerEvents='click'>
-                        <IconButton variant='link' onClick={() => handleShowPassword()}>
+                        <IconButton variant='link' onClick={() => setShowPassword.toggle()}>
                             {showPassword ? <ViewOffIcon color='gray.icon'/> : <ViewIcon color='gray.500'/>}
                         </IconButton>
                       </InputRightElement>
