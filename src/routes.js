@@ -1,7 +1,18 @@
 import { Navigate, createBrowserRouter, useNavigate } from "react-router-dom";
-import { LoginPage, RegisterPage, RegisterUserForm, RegisterUserAs } from "./pages";
+import { LoginPage, RegisterPage, RegisterUserForm, RegisterUserAs, HomePage } from "./pages";
+import { NavigationWrapper } from "./components";
 
 const routes = createBrowserRouter([
+  {
+    path: '',
+    element: <NavigationWrapper />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />
+      }
+    ]
+  },
     {
       path: '/login',
       element: <LoginPage />
