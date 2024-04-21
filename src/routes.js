@@ -1,11 +1,14 @@
 import { Navigate, createBrowserRouter, useNavigate } from "react-router-dom";
 import { LoginPage, RegisterPage, RegisterUserForm, RegisterUserAs, HomePage } from "./pages";
-import { NavigationWrapper } from "./components";
+import { NavigationWrapper } from "./layouts";
+import { CategoryProvider } from "./context/category_context";
 
 const routes = createBrowserRouter([
   {
     path: '',
-    element: <NavigationWrapper />,
+    element: <CategoryProvider>
+      <NavigationWrapper />
+    </CategoryProvider>,
     children: [
       {
         path: '/',

@@ -1,3 +1,3 @@
-import NavigationWrapper from './navigation';
+import PropertyCard from "./property_card";
 
-export { NavigationWrapper }
+export { PropertyCard }
