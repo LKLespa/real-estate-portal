@@ -20,8 +20,10 @@ import * as Yup from "yup";
 import React, { useState } from "react";
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
+import { useAuth } from "../context/auth_context";
 
 export default function LoginPage() {
+    const authenticate = useAuth()
     const [ showPassword, setShowPassword ] = useBoolean();
 
   return (
@@ -41,7 +43,8 @@ export default function LoginPage() {
               })}
               onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
+                  // alert(JSON.stringify(values, null, 2));
+                  authenticate.signIn(values.email, values.password);
                   setSubmitting(false);
                 }, 400);
               }}
@@ -96,7 +99,7 @@ export default function LoginPage() {
                   )}
                 </Field>
                 <ChakraLink as={ReactRouterLink} color='teal' to='/forgot-password' mt={4}>Forgot Password?</ChakraLink>
-                <Button mt={4} type="submit" w='100%'>
+                <Button mt={4} type="submit" w='100%' disabled={authenticate.loading}>
                   Login
                 </Button>
               </Form>

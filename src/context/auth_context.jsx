@@ -1,91 +1,161 @@
-import React, { createContext, useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut as firebaseSignOut } from 'firebase/auth';
-import { auth, db } from '../firebaseConfig';
-import { doc, getDoc, collection, setDoc } from 'firebase/firestore';
-import { SiDblp } from 'react-icons/si';
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  getAuth,
+} from "firebase/auth";
+import { auth, db } from "../firebaseConfig";
+import { doc, getDoc, collection, setDoc } from "firebase/firestore";
+import { SiDblp } from "react-icons/si";
+import { useToast } from "@chakra-ui/react";
 
 // Create a context for authentication
 export const AuthContext = createContext();
 
 // Create a provider component for authentication
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState();
+  const [error, setError] = useState("");
+  const [isAuth, setIsAuth] = useState(false);
+  const toast = useToast();
+
+  // Wrap in use effect
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
+  //     if (user) {
+  //       setIsAuth(true)
+  //       await getUserData();
+  //     } else {
+  //       setUserData(null);
+  //       setIsAuth(false);
+  //     }
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
+  const getUserData = useCallback(
+    async () => {
+    if (getAuth().currentUser) {
+      const id = getAuth().currentUser.uid;
+      const userDocRef = doc(collection(db, "users"), id);
+      try {
+        const docSnapshot = await getDoc(userDocRef);
+        setUserData({ id, ...docSnapshot.data() });
+      } catch (error) {
+        toast({
+          title: "Connection Problem",
+          description: "Check your internet connection",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    }
+  }, []);
 
   // Function to sign out from Firebase
   const signOut = () => {
-    firebaseSignOut()
-     .then(() => {
-        setCurrentUser(null);
-      })
-     .catch(error => {
-        console.log(error);
+    const logOut = async () => {
+      await firebaseSignOut(auth).catch((error) => {
+        setError(error.message);
+        setUserData(null);
+        throw error;
       });
-  };
+    };
 
-//   // Subscribe to authentication state changes
-//   onAuthStateChanged((user) => {
-//     setCurrentUser(user);
-//   });
-
-  const signIn = async (email, password) => {
-    try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-  
-      // Fetch the user's document from the user's collection
-      const userDocRef = doc(collection(db, 'users'), user.uid);
-      const userDocSnapshot = await getDoc(userDocRef);
-  
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
-        setCurrentUser({
-          id: user.uid,
-          email: userData.email,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          telephone: userData.telephone,
-        });
-      } else {
-        console.error('User document not found');
-        throw new Error('User document not found');
-      }
-    } catch (error) {
-      console.error('Error signing in:', error);
-      throw error;
-    }
-  };
-
-const signUp = async (email, password, fullname, telephone) => {
-  try {
-    createUserWithEmailAndPassword( auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      const userDocRef = doc(collection(db, 'users'), user.uid);
-      setDoc(userDocRef, {
-        id: user.uid,
-        email,
-        fullname,
-        telephone,
-      }).then(() => {
-        setCurrentUser({id: user.uid, email, fullname, telephone, });
-      }).catch((error) => {
-        console.error('Error setting user:', error);
-      })
-    })
-    .catch((error) => {
-      console.error('Error creating user:', error);
+    toast.promise(logOut(), {
+      success: { title: "Logout Successful" },
+      error: { title: "Logout Failed", error },
+      loading: { title: "Logging out...", description: "Please wait" },
     });
-  } catch (error) {
-    console.error('Error signing up:', error);
-    throw error;
-  }
-};
+  };
+
+  const signIn = (email, password) => {
+    const login = async () => {
+      try {
+        const { user } = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+      } catch (error) {
+        switch (error.code) {
+          case "auth/invalid-email":
+            setError("Invalid email address");
+            throw new Error("Invalid email address");
+          case "auth/user-not-found":
+            setError("User not found");
+            throw new Error("User not found");
+          case "auth/wrong-password":
+            setError("Wrong password");
+            throw new Error("Wrong password");
+          case "auth/network-request-failed":
+            setError("Network request failed");
+            throw new Error("Network request failed");
+          default:
+            throw error;
+        }
+      } finally {
+      }
+
+      window.location.pathname = "/";
+    };
+
+    toast.promise(login(), {
+      success: { title: "Login Successful" },
+      error: { title: "Login Failed", description: error },
+      loading: { title: "Logging in...", description: "Please wait" },
+    });
+  };
+
+  const signUp = (email, password, fullName, phoneNumber) => {
+    const register = async () => {
+      try {
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const userRef = doc(collection(db, "users"), user.uid);
+        await setDoc(userRef, { id: user.uid, email, fullName, phoneNumber });
+        setUserData({ id: user.uid, email, fullName, phoneNumber });
+        window.location.pathname = "/";
+      } catch (error) {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            setError("Email already in use");
+            throw new Error("Email already in use");
+          case "auth/invalid-email":
+            setError("Invalid email address");
+            throw new Error("Invalid email address");
+          case "auth/weak-password":
+            setError("Password should be at least 6 characters");
+            throw new Error("Password should be at least 6 characters");
+          default:
+            throw error;
+        }
+      } finally {
+      }
+    };
+
+    toast.promise(register(), {
+      success: { title: "Registration successful" },
+      error: { title: "Registration unsuccessful", description: error },
+      loading: { title: "Registering...", description: "Please wait..." },
+    });
+  };
 
   // Provide the current user and authentication functions to the children components
   return (
-    <AuthContext.Provider value={{ currentUser, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ userData, signIn, signUp, signOut, getUserData, isAuth }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

@@ -21,7 +21,6 @@ import { SearchIcon } from "@chakra-ui/icons";
 
 export default function Sidebar() {
   const { categories, selectedCategories, toggleCategory } = useCategories();
-  console.log("Category", categories, selectedCategories, toggleCategory);
 
   const allCategories = useMemo(() => {
     return categories.map((categoryGroup) => (

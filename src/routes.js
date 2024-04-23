@@ -1,5 +1,5 @@
 import { Navigate, createBrowserRouter, useNavigate } from "react-router-dom";
-import { LoginPage, RegisterPage, RegisterUserForm, RegisterUserAs, HomePage } from "./pages";
+import { LoginPage, RegisterPage, HomePage } from "./pages";
 import { NavigationWrapper } from "./layouts";
 import { CategoryProvider } from "./context/category_context";
 
@@ -23,23 +23,6 @@ const routes = createBrowserRouter([
     {
         path: '/register',
         element: <RegisterPage />,
-        children: [
-          {
-            path: '',
-            element: <RegisterUserAs />
-          },
-          {
-            path: ':userType',
-            element: <RegisterUserForm />,
-            loader: ({ params }) => {
-              console.log(params);
-              if (!(params.userType == 'client' || params.userType === 'owner')) {
-                throw new Error('Invalid user type');
-              }
-              return params.userType;
-            }
-          },
-        ]
     }
   ]);
 
