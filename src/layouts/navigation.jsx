@@ -34,27 +34,16 @@ import { auth } from "../firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function NavigationWrapper() {
-  const { userData, signOut, getUserData } = useAuth();
-  const [ loading, setLoading ] = useState(true);
+  const { userData, signOut, getUserData, loading } = useAuth();
   const navigate = useNavigate();
-  const [ authObj, setAuthObj ] = useState(null);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setLoading(false);
-        getUserData();
-      } else  {
-      setLoading(false);
-    }});
-    return () => unsubscribe();
-  }, []);
+  console.log('Auth', auth)
 
   if(loading) {
     return (<div>Loading...</div>)
   }
   if (!auth.currentUser){
-    return <div>Failed...</div>
+   return <Navigate to='/login' replace />
   } 
   
   return (

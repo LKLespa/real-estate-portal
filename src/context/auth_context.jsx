@@ -19,22 +19,21 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState();
   const [error, setError] = useState("");
-  const [isAuth, setIsAuth] = useState(false);
+  const [loading, setLoading] = useState(true);
   const toast = useToast();
 
   // Wrap in use effect
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
-  //     if (user) {
-  //       setIsAuth(true)
-  //       await getUserData();
-  //     } else {
-  //       setUserData(null);
-  //       setIsAuth(false);
-  //     }
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await getUserData();
+      } else {
+        setUserData(null);
+      }
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, [auth]);
 
   const getUserData = useCallback(
     async () => {
@@ -151,7 +150,7 @@ export const AuthProvider = ({ children }) => {
   // Provide the current user and authentication functions to the children components
   return (
     <AuthContext.Provider
-      value={{ userData, signIn, signUp, signOut, getUserData, isAuth }}
+      value={{ userData, signIn, signUp, signOut, getUserData, loading }}
     >
       {children}
     </AuthContext.Provider>
