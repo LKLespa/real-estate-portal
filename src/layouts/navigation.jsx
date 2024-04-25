@@ -70,23 +70,13 @@ export default function NavigationWrapper() {
               <IconButton isRound>
                 <BiMessage />
               </IconButton>
-              <IconButton variant="unstyled" onClick={() => signOut()}>
+              <IconButton variant="unstyled" onClick={() => navigate('/profile')}>
                 <Avatar src="" height={"40px"} width={"40px"} />
               </IconButton>
             </HStack>
           </HStack>
         </Box>
-        <HStack
-          className="content"
-          width="100%"
-          align="stretch"
-          overflowY="hidden"
-        >
-          <Sidebar />
-          <Box flexGrow={1} bg="white" p={3}>
-            <Outlet />
-          </Box>
-        </HStack>
+        <Outlet />
       </VStack>
     </Container>
   ) 

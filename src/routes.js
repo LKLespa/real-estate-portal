@@ -1,29 +1,39 @@
 import { Navigate, createBrowserRouter, useNavigate } from "react-router-dom";
-import { LoginPage, RegisterPage, HomePage } from "./pages";
+import { LoginPage, RegisterPage, HomePage, PropertyPage } from "./pages";
 import { NavigationWrapper } from "./layouts";
 import { CategoryProvider } from "./context/category_context";
 
 const routes = createBrowserRouter([
   {
-    path: '',
-    element: <CategoryProvider>
-      <NavigationWrapper />
-    </CategoryProvider>,
+    path: "",
+    element: (
+      <CategoryProvider>
+        <NavigationWrapper />
+      </CategoryProvider>
+    ),
     children: [
       {
-        path: '/',
-        element: <HomePage />
-      }
-    ]
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "property/:propertyId",
+        element: <PropertyPage />,
+      },
+    ],
   },
-    {
-      path: '/login',
-      element: <LoginPage />
-    },
-    {
-        path: '/register',
-        element: <RegisterPage />,
-    }
-  ]);
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+  {
+    path: "/*",
+    element: <Navigate to="/" />,
+  },
+]);
 
-  export default routes;
+export default routes;

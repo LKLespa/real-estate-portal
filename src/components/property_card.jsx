@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Card,
@@ -7,23 +8,30 @@ import {
   CardFooter,
   CardHeader,
   Flex,
+  HStack,
   Heading,
   IconButton,
   Image,
+  Spacer,
   Stack,
   Text,
   WrapItem
 } from "@chakra-ui/react";
 import React from "react";
 import { gibberish } from "../assets";
-import { MdFavorite } from "react-icons/md";
-import { BiBookmark, BiMessageSquare } from "react-icons/bi";
+import { FaHome, FaLocationArrow } from "react-icons/fa";
+import { GrLocation } from "react-icons/gr";
+import { useNavigate } from "react-router";
 
 export default function PropertyCard({ property }) {
+  const navigate = useNavigate()
   property = property[0];
   return (
     <WrapItem>
-      <Card maxW='xs' size='sm' variant='filled'>
+      <Card width='xs' size='sm' variant='filled' _hover={{
+        boxShadow: "dark-lg",
+        cursor: "pointer",
+      }} onClick={() => navigate(`/property/${property.id}`)}>
         <CardHeader>
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
             <Avatar
@@ -37,143 +45,31 @@ export default function PropertyCard({ property }) {
           </Flex>
         </CardHeader>
         <CardBody>
-          <Text noOfLines={2} textOverflow='ellipsis'>
+          <Flex justify='space-between'>
+          <HStack spacing={1} alignItems='center'>
+            <FaHome size='20px'/>
+            <Heading size='md'>{property.type}</Heading>
+          </HStack>
+          <Text fontWeight='bold'>{property.noRooms} {property.noRooms > 0 ? 'Rooms' : 'Room'}</Text>
+          </Flex>
+          <HStack>
+              <GrLocation />
+              <Text fontSize='sm' fontWeight='semibold' color='gray.700'>{property.city} {property.cameroon}, {property.address}</Text>
+            </HStack>
+          <Text fontWeight='semibold'>{property.price} per {property.installment}</Text>
+        </CardBody>
+        <Box height='fit-content' position='relative'>
+        <Badge variant='solid' position='absolute' top={2} left={2}>{property.status}</Badge>
+        <Image src={gibberish} objectFit="cover" alt={property.title} height={200} width='100%'/>
+        <Box position='absolute' bottom={0} left={0} p={1} bgColor='rgba(0, 0, 0, 0.5)'>
+        <Text noOfLines={2} lineHeight={1.2} textOverflow='ellipsis' color='white'>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore
             saepe quos fugit similique modi autem numquam, sed maxime blanditiis
             ex.
           </Text>
-          {/* <Flex maxHeight="500px" justify='center' align={'center'}>
-            {displayImages([])}
-          </Flex> */}
-        </CardBody>
-        <Image src={gibberish} objectFit="cover" alt={property.title} />
-        <CardFooter justify="space-between" flexWrap="wrap">
-          <IconButton isRound variant='ghost' colorScheme='red'><MdFavorite size={25}/></IconButton>
-          <IconButton isRound variant='ghost'>
-            <BiBookmark size={25}/>
-          </IconButton>
-          <IconButton isRound variant='ghost'>
-            <BiMessageSquare size={25}/>
-          </IconButton>
-        </CardFooter>
+        </Box>
+        </Box>
       </Card>
     </WrapItem>
   );
 }
-
-const displayImages = (images) => {
-  let numberOfPhotos = Math.floor(Math.random() * 6) + 1;
-  numberOfPhotos = 1;
-  images = [
-    gibberish,
-    gibberish,
-    gibberish,
-    gibberish,
-    gibberish,
-    gibberish,
-    gibberish,
-  ];
-  console.log("Images", numberOfPhotos);
-
-  switch (numberOfPhotos) {
-    case 1:
-      return OneImageList(images);
-    case 2:
-      return TwoImageList(images);
-    case 3:
-      return ThreeImageList(images);
-    case 4:
-      return FourImageList(images);
-    case 5:
-      return FiveImageList(images);
-    default:
-      return SixImageList(images);
-  }
-};
-
-const OneImageList = (image) => (
-  <Box width="300px" height="250px" flexGrow={1}>
-    <MyImage bgImage={image[0]} width="100%" />
-  </Box>
-);
-
-const TwoImageList = (images) => (
-  <Stack
-    spacing={1}
-    direction={["column", null, "row"]}
-    height="400px"
-    width="100%"
-  >
-    <MyImage bgImage={images[0]} flexGrow={4} />
-    <MyImage bgImage={images[1]} flexGrow={2} />
-  </Stack>
-);
-
-const ThreeImageList = (images) => (
-  <Stack direction={["column", null, "row"]} height="100%">
-    <MyImage bgImage={images[0]} flexGrow={3} />
-    <Stack direction={["row", null, "column"]}>
-      <MyImage bgImage={images[1]} flexGrow={1} />
-      <MyImage bgImage={images[2]} flexGrow={1} />
-    </Stack>
-  </Stack>
-);
-
-const FourImageList = (images) => (
-  <Stack>
-    <Stack flex={3}>
-      <MyImage bgImage={images[0]} flexGrow={3} />
-      <MyImage bgImage={images[1]} flexGrow={2} />
-    </Stack>
-    <Stack flex={2}>
-      <MyImage bgImage={images[2]} flexGrow={1} />
-      <MyImage bgImage={images[3]} flexGrow={1} />
-    </Stack>
-  </Stack>
-);
-
-const FiveImageList = (images) => (
-  <Stack>
-    <Stack flex={3}>
-      <MyImage bgImage={images[0]} flexGrow={3} />
-      <Stack>
-        <MyImage bgImage={images[1]} flexGrow={1} />
-        <MyImage bgImage={images[2]} flexGrow={1} />
-      </Stack>
-    </Stack>
-    <Stack flex={2}>
-      <MyImage bgImage={images[3]} flexGrow={1} />
-      <MyImage bgImage={images[4]} flexGrow={1} />
-    </Stack>
-  </Stack>
-);
-
-const SixImageList = (images) => (
-  <Stack>
-    <Stack flex={3}>
-      <MyImage bgImage={images[0]} flexGrow={3} />
-      <Stack>
-        <MyImage bgImage={images[1]} flexGrow={1} />
-        <MyImage bgImage={images[2]} flexGrow={1} />
-      </Stack>
-    </Stack>
-    <Stack flex={2}>
-      <MyImage bgImage={images[3]} flexGrow={1} />
-      <MyImage bgImage={images[4]} flexGrow={1} />
-      <MyImage bgImage={images[5]} flexGrow={1} />
-    </Stack>
-  </Stack>
-);
-
-const MyImage = (props) => {
-  return (
-    <Box
-      {...props}
-      height="100%"
-      width="100%"
-      bgSize="cover"
-      bgPosition={"center"}
-      borderRadius={20}
-    ></Box>
-  );
-};
