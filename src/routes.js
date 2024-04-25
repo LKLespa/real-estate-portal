@@ -1,5 +1,5 @@
 import { Navigate, createBrowserRouter, useNavigate } from "react-router-dom";
-import { LoginPage, RegisterPage, HomePage, PropertyPage } from "./pages";
+import { LoginPage, RegisterPage, HomePage, PropertyPage, ProfilePage } from "./pages";
 import { NavigationWrapper } from "./layouts";
 import { CategoryProvider } from "./context/category_context";
 
@@ -20,6 +20,10 @@ const routes = createBrowserRouter([
         path: "property/:propertyId",
         element: <PropertyPage />,
       },
+      {
+        path: 'profile',
+        element: <ProfilePage />
+      }
     ],
   },
   {
