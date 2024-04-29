@@ -12,11 +12,11 @@ import {
   useBoolean,
   useToast,
 } from "@chakra-ui/react";
-import { useAuth } from "../context/auth_context";
+import { useAuth } from "../../context/auth_context";
 import { useEffect, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { countryData } from "../temp/country_data";
+import { db } from "../../firebaseConfig";
+import { countryData } from "../../temp/country_data";
 
 const ProfileForm = ({ userData }) => {
   const [edit, setEdit] = useBoolean();
@@ -33,7 +33,11 @@ const ProfileForm = ({ userData }) => {
   });
 
   const [cities, setCities] = useState(() => {
-    return countryData.states.find(state => state.name === data.Region).cities;
+    try {
+      return countryData.states.find(state => state.name === data.Region).cities;
+    } catch (err) {
+      return [];
+    }
   })
 
   useEffect(() => {
@@ -222,7 +226,7 @@ const ProfileForm = ({ userData }) => {
             <Tr>
               <Td colSpan={2}>
                 {edit ? (
-                  <Button type="submit" width="100%" disabled={submitting}>
+                  <Button type="submit" width="100%" isLoading={submitting} loadingText={"Updating..."}>
                     Save
                   </Button>
                 ) : (

@@ -166,7 +166,7 @@ export default function RegisterPage() {
           </VStack>
 
           <Center>
-            <Button mt={4} width="200px" colorScheme="teal" type="submit" disabled={authenticate.loading}>
+            <Button mt={4} width="200px" colorScheme="teal" type="submit" isLoading={authenticate.loading} loadingText='Submitting'>
               Register
             </Button>
           </Center>

@@ -7,19 +7,29 @@ import {
 import React, { useState } from "react";
 import { BiHome, BiMessage } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { useAuth } from "../context/auth_context";
+import { useAuth } from "../../context/auth_context";
 import ProfileForm from "./profileForm";
+import { AddIcon } from "@chakra-ui/icons";
+import NewProperty from "../add_property/newProperty";
 
 export default function ProfilePage() {
   const { userData, loading } = useAuth()
+  const tempData = {
+    fullName: 'Elkay Lespa',
+    email: 'elkaylespa@gmail.com',
+    phoneNumber: '679-682-262',
+    address: '123 Main St',
+    city: 'Centre',
+    region: 'Akono',
+  }
 
   if(loading) {
     return (<div>loading...</div>)
   }
 
-  if(!userData) {
-    return (<div>No user data</div>)
-  }
+  // if(!userData) {
+  //   return (<div>No user data</div>)
+  // }
 
   return (
     <Container maxW="container.xl" height="100vh" bgColor="white">
@@ -34,6 +44,10 @@ export default function ProfilePage() {
             <Text>My Properties</Text>
           </Tab>
           <Tab>
+            <AddIcon />
+            <Text>Add Property</Text>
+          </Tab>
+          <Tab>
             <BiMessage />
             <Text>Messages</Text>
           </Tab>
@@ -43,11 +57,14 @@ export default function ProfilePage() {
           <TabPanel>
             <VStack>
               <Avatar size="2xl" name="Mbah Lesky" />
-              <ProfileForm userData={userData} />
+              <ProfileForm userData={userData !== undefined ? userData : tempData} />
             </VStack>
           </TabPanel>
           <TabPanel>
             
+          </TabPanel>
+          <TabPanel>
+            <NewProperty />
           </TabPanel>
         </TabPanels>
       </Tabs>

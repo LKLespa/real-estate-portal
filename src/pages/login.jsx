@@ -99,7 +99,7 @@ export default function LoginPage() {
                   )}
                 </Field>
                 <ChakraLink as={ReactRouterLink} color='teal' to='/forgot-password' mt={4}>Forgot Password?</ChakraLink>
-                <Button mt={4} type="submit" w='100%' disabled={authenticate.loading}>
+                <Button mt={4} type="submit" w='100%' isLoading={authenticate.loading} loadingText='Submitting'>
                   Login
                 </Button>
               </Form>
