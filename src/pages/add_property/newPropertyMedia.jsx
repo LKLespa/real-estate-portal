@@ -3,12 +3,32 @@ import { useState } from "react";
 import { gibberish } from "../../assets";
 import { PiPlayCircle } from "react-icons/pi";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { collection, doc } from "firebase/firestore";
+import { auth, db, storage } from "../../firebaseConfig";
+import { useAuth } from "../../context/auth_context";
+import { ref } from "firebase/storage";
 
 const NewPropertyMediaFrom = ({property, stepper, setProperty}) => {
   const [photoUrls, setPhotoUrls] = useState([]);
   const [videoUrl, setVideoUrl] = useState("");
   const toast = useToast();
   const [submitting, setSubmitting] = useBoolean(false);
+  const userID = auth.currentUser.uid;
+
+  const uploadPhoto = async (file, id, index) => {
+    const name = file.name.slice(10)
+    let newPhotoUrls = [...photoUrls];
+    newPhotoUrls[index] = `${id}/${name}`;
+    setPhotoUrls(newPhotoUrls);
+    const storageRef = ref(storage, `properties/${photoUrls[index]}`);
+  }
+
+  const uploadVideo = async (file, id) => {
+    const name = file.name.slice(10)
+    setVideoUrl(`${id}/${name}`);
+    const storageRef = ref(storage, `properties/${videoUrl}`);
+  }
+
 
   const handlePhotoChange = (e) => {
     const files = e.target.files;
@@ -81,13 +101,28 @@ const NewPropertyMediaFrom = ({property, stepper, setProperty}) => {
             });
             return;
         }
-        setSubmitting.on();
         setProperty(prev => ({...prev, photos: photoUrls, video: videoUrl}));
-        const data = {
-            ...property,
-            photos: photoUrls,
-            video: videoUrl
+        const upload = () => {
+            try {
+                setSubmitting.on();
+                const docRef = doc(collection(db, "properties"))
+                console.log('Doc ref', docRef.id)
+
+                const data = {
+                    ownerID: userID,
+                    ...property,
+                    photos: photoUrls,
+                    video: videoUrl
+                }
+            } catch (error) {
+                console.log(error);
+                throw new Error("An Error occured while uploading");
+            } finally {
+                setSubmitting.off();
+            }
         }
+
+        upload()
   }
 
   return (

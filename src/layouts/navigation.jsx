@@ -39,12 +39,12 @@ export default function NavigationWrapper() {
 
   console.log('Auth', auth)
 
-  // if(loading) {
-  //   return (<div>Loading...</div>)
-  // }
-  // if (!auth.currentUser){
-  //  return <Navigate to='/login' replace />
-  // } 
+  if(loading) {
+    return (<div>Loading...</div>)
+  }
+  if (!auth.currentUser){
+   return <Navigate to='/login' replace />
+  } 
   
   return (
     <Container maxW="100vw" bg="gray.100" h="100vh">
