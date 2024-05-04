@@ -29,18 +29,12 @@ const steps = [
   },
   {
     title: "Sale/Rent",
-    description: "Do you want to sale or rent this property",
-    element: <div>Home 2</div>,
   },
   {
     title: "Property Info",
-    description: "Fill in the property information",
-    element: <div>Home 3</div>,
   },
   {
     title: "Property Media",
-    description: "Add some pictures and a video for this property",
-    element: <div>Home 4</div>,
   },
 ];
 
