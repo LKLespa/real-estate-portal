@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import NewPropertyInfoForm from "./newPropertyInfoForm";
 import NewPropertyMediaFrom from "./newPropertyMedia";
+import { useTheme } from "@emotion/react";
 
 const steps = [
   {
@@ -45,8 +46,9 @@ const NewProperty = () => {
     console.log("Property is ", property);
   }, [stepper.activeStep]);
   return (
-    <Flex paddingTop={3}>
+    <Flex paddingTop={3} direction={["column", null, "row"]}>
       <Stepper
+        display={["none", null, "flex"]}
         index={stepper.activeStep}
         orientation="vertical"
         height="300px"
@@ -68,7 +70,26 @@ const NewProperty = () => {
           </Step>
         ))}
       </Stepper>
-      <Box flexGrow={1} p={5} paddingTop={0}>
+      <Stepper
+        display={["flex", null, "none"]}
+        orientation="horizontal"
+        index={stepper.activeStep}
+        marginBottom={2}
+      >
+        {steps.map((step, index) => (
+          <Step key={index}>
+            <StepIndicator>
+              <StepStatus
+                complete={<StepIcon />}
+                incomplete={<StepNumber />}
+                active={<StepNumber />}
+              />
+            </StepIndicator>
+            <StepSeparator />
+          </Step>
+        ))}
+      </Stepper>
+      <Box flexGrow={1} p={[0, 0, 5]} paddingTop={0}>
         {
           [
             <SelectPropertyType stepper={stepper} setProperty={setProperty} />,

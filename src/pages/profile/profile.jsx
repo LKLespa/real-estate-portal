@@ -32,24 +32,24 @@ export default function ProfilePage() {
   // }
 
   return (
-    <Container maxW="container.xl" height="100vh" bgColor="white">
+    <Container maxW="container.2xl" height="100vh" bgColor="white">
       <Tabs>
         <TabList>
           <Tab>
-            <CgProfile />
-            <Text>My Profile</Text>
+            <CgProfile fontSize='25px' />
+            <Text display={["none", null, "block"]}>My Profile</Text>
           </Tab>
           <Tab>
-            <BiHome />
-            <Text>My Properties</Text>
+            <BiHome fontSize='25px' />
+            <Text display={["none", null, "block"]}>My Properties</Text>
           </Tab>
           <Tab>
-            <AddIcon />
-            <Text>Add Property</Text>
+            <AddIcon fontSize='25px' />
+            <Text display={["none", null, "block"]}>Add Property</Text>
           </Tab>
           <Tab>
-            <BiMessage />
-            <Text>Messages</Text>
+            <BiMessage fontSize='25px' />
+            <Text display={["none", null, "block"]}>Messages</Text>
           </Tab>
         </TabList>
 

@@ -108,7 +108,7 @@ const ProfileForm = ({ userData }) => {
   return (
     <form onSubmit={handleSubmit}>
       <TableContainer>
-        <Table>
+        <Table size={['sm', 'md']}>
           <Tbody>
             <Tr>
               <Th>Fullname*</Th>

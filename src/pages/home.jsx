@@ -7,7 +7,9 @@ import Sidebar from "../layouts/sidebar";
 export default function HomePage() {
   return (
     <HStack className="content" width="100%" align="stretch" overflowY="hidden">
-      <Sidebar />
+      <Box display={["none", null, "block"]}>
+        <Sidebar />
+      </Box>
       <Box flexGrow={1} bg="white" p={3}>
         <VStack height="100%" overflowY="auto">
           <Wrap spacing="20px" justify="space-around">

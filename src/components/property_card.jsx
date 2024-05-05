@@ -28,7 +28,7 @@ export default function PropertyCard({ property }) {
   property = property[0];
   return (
     <WrapItem>
-      <Card width='xs' size='sm' variant='filled' _hover={{
+      <Card width='xs' size={["xs", "sm"]} variant='filled' _hover={{
         boxShadow: "dark-lg",
         cursor: "pointer",
       }} onClick={() => navigate(`/property/${property.id}`)}>

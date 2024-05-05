@@ -88,7 +88,7 @@ const NewPropertyInfoForm = ({ property, stepper, setProperty }) => {
   }
 
   return (
-    <VStack>
+    <VStack width='100%'>
       <HStack paddingBottom={5}>
         <IconButton
           variant="ghost"
