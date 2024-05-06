@@ -2,13 +2,16 @@ import { Navigate, createBrowserRouter, useNavigate } from "react-router-dom";
 import { LoginPage, RegisterPage, HomePage, PropertyPage, ProfilePage } from "./pages";
 import { NavigationWrapper } from "./layouts";
 import { CategoryProvider } from "./context/category_context";
+import { PropertiesProvider } from "./context/properties_context";
 
 const routes = createBrowserRouter([
   {
     path: "",
     element: (
       <CategoryProvider>
-        <NavigationWrapper />
+        <PropertiesProvider>
+          <NavigationWrapper />
+        </PropertiesProvider>
       </CategoryProvider>
     ),
     children: [

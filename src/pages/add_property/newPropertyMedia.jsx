@@ -28,6 +28,7 @@ import { useAuth } from "../../context/auth_context";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useNavigate } from "react-router";
 import { replace } from "formik";
+import { usePropertiesContext } from "../../context/properties_context";
 
 const NewPropertyMediaFrom = ({ property, stepper, setProperty }) => {
   const [photoUrls, setPhotoUrls] = useState([]);
@@ -43,6 +44,7 @@ const NewPropertyMediaFrom = ({ property, stepper, setProperty }) => {
   const docRef = doc(collection(db, "properties"));
   const [filesUploaded, setFilesUploaded] = useState(0);
   const [initialRender, setInitialRender] = useState(true);
+  const { refreshFetch } = usePropertiesContext();
   console.log('Property', property)
 
   useEffect(() => {
@@ -57,6 +59,7 @@ const NewPropertyMediaFrom = ({ property, stepper, setProperty }) => {
         })
         setTimeout(() => {
           setSubmitting.off();
+          refreshFetch()
           navigate("/", replace);
         }, 4000);
     }
@@ -322,6 +325,12 @@ const NewPropertyMediaFrom = ({ property, stepper, setProperty }) => {
           })
           .catch((error) => {
             console.log("Upload Error", error);
+            toast({
+              title: error.message,
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            })
             reject(new Error("An Error occured while uploading"));
           })
           .finally(() => {

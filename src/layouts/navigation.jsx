@@ -4,6 +4,7 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   Container,
   Divider,
   Flex,
@@ -20,6 +21,7 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Spinner,
   VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -40,7 +42,11 @@ export default function NavigationWrapper() {
   console.log('Auth', auth)
 
   if(loading) {
-    return (<div>Loading...</div>)
+    return (
+    <Box height='100vh' width='100vw'>
+      <Center height='100%' width='100%'><Spinner /></Center>
+    </Box>
+    )
   }
   if (!auth.currentUser){
    return <Navigate to='/login' replace />
@@ -51,12 +57,16 @@ export default function NavigationWrapper() {
       <VStack spacing={2} height="100%">
         <Box bg="white" width="100%" px={3} py={4}>
           <HStack justify="space-between" align="center" spacing={2}>
+            <Link to="/">
             <Heading flexShrink={0} size={["md", "lg"]} color="teal.600" display={["none", null, "block"]}>
               Real Estate Portal
             </Heading>
-            <Heading size={["md", "lg"]} color="teal.600" display={["block", null, "none"]}>
+            </Link>
+            <Link to="/">
+            <Heading onClick={() => navigate('/')} size={["md", "lg"]} color="teal.600" display={["block", null, "none"]}>
               REP
             </Heading>
+            </Link>
             <InputGroup maxW="500px" flexShrink={1}>
               <InputLeftElement>
                 <IconButton variant="ghost">

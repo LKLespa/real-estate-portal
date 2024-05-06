@@ -39,9 +39,9 @@ const steps = [
   },
 ];
 
-const NewProperty = () => {
+const NewProperty = ({userData}) => {
   const stepper = useSteps({ index: 0, count: steps.length });
-  const [property, setProperty] = useState(null);
+  const [property, setProperty] = useState({ownerName: userData?.fullName});
   useEffect(() => {
     console.log("Property is ", property);
   }, [stepper.activeStep]);

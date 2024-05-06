@@ -11,17 +11,10 @@ import { useAuth } from "../../context/auth_context";
 import ProfileForm from "./profileForm";
 import { AddIcon } from "@chakra-ui/icons";
 import NewProperty from "../add_property/newProperty";
+import UserProperties from "./userProperties";
 
 export default function ProfilePage() {
   const { userData, loading } = useAuth()
-  const tempData = {
-    fullName: 'Elkay Lespa',
-    email: 'elkaylespa@gmail.com',
-    phoneNumber: '679-682-262',
-    address: '123 Main St',
-    city: 'Centre',
-    region: 'Akono',
-  }
 
   if(loading) {
     return (<div>loading...</div>)
@@ -57,14 +50,14 @@ export default function ProfilePage() {
           <TabPanel>
             <VStack>
               <Avatar size="2xl" name="Mbah Lesky" />
-              <ProfileForm userData={userData !== undefined ? userData : tempData} />
+              <ProfileForm userData={userData} />
             </VStack>
           </TabPanel>
           <TabPanel>
-            
+            <UserProperties />
           </TabPanel>
           <TabPanel>
-            <NewProperty />
+            <NewProperty userData={userData} />
           </TabPanel>
         </TabPanels>
       </Tabs>

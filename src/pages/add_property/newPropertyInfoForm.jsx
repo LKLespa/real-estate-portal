@@ -49,7 +49,7 @@ const NewPropertyInfoForm = ({ property, stepper, setProperty }) => {
         : Yup.number(),
     region: Yup.string().trim().required("Region is required"),
     city: Yup.string().trim().required("City is required"),
-    address: Yup.string().trim().required("Address is required"),
+    address: Yup.string().trim(),
     latitude: Yup.number()
       .min(-90, "Latitude must be between -90 and 90")
       .max(90, "Latitude must be between -90 and 90"),
@@ -65,7 +65,7 @@ const NewPropertyInfoForm = ({ property, stepper, setProperty }) => {
   });
 
   const initialValues = {
-    name: "",
+    name: property.type,
     noOfRooms: "",
     area: "",
     region: "",

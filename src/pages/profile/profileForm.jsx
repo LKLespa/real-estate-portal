@@ -24,12 +24,12 @@ const ProfileForm = ({ userData }) => {
   const { getUserData } = useAuth();
   const toast = useToast();
   const [data, setData] = useState({
-    Fullname: userData.fullName,
-    Email: userData.email,
-    Phone: userData.phoneNumber,
-    Address: userData.address,
-    City: userData.city,
-    Region: userData.region,
+    Fullname: userData?.fullName,
+    Email: userData?.email,
+    Phone: userData?.phoneNumber,
+    Address: userData?.address,
+    City: userData?.city,
+    Region: userData?.region,
   });
 
   const [cities, setCities] = useState(() => {
