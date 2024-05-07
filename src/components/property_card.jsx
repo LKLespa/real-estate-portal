@@ -34,9 +34,7 @@ export default function PropertyCard({ property }) {
   getDownloadURL(ref(storage, property.photos[0])).then((url) => {
     setImageUrl(url);
   }).catch((error) => {
-    console.log("Image url error", error)
   })
-  console.log("Date Uploaded", dateUploaded, imageUrl);
   const navigate = useNavigate();
   return (
     <WrapItem>

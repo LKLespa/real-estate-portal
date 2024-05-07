@@ -18,7 +18,7 @@ import {
   useBoolean,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gibberish } from "../../assets";
 import { PiPlayCircle } from "react-icons/pi";
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -151,6 +151,7 @@ const NewPropertyMediaFrom = ({ property, stepper, setProperty }) => {
   };
 
   const uploadVideo = async ({ path, videoFile }) => {
+    // Todo: update toast to display video upload progress
     const upload = async () => {
       return new Promise((resolve, reject) => {
         const storageRef = ref(storage, path);
