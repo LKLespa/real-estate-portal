@@ -40,10 +40,6 @@ export default function ProfilePage() {
             <AddIcon fontSize='25px' />
             <Text display={["none", null, "block"]}>Add Property</Text>
           </Tab>
-          <Tab>
-            <BiMessage fontSize='25px' />
-            <Text display={["none", null, "block"]}>Messages</Text>
-          </Tab>
         </TabList>
 
         <TabPanels>
