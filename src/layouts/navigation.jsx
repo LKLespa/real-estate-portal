@@ -44,9 +44,11 @@ import { BiHeart, BiMessage, BiSave } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
 import { auth } from "../firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { usePropertiesContext } from "../context/properties_context";
 
 export default function NavigationWrapper() {
   const { userData, signOut, getUserData, loading } = useAuth();
+  const { setSearchQuery } = usePropertiesContext();
   const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -83,7 +85,7 @@ const btnRef = React.useRef();
                   <SearchIcon />
                 </IconButton>
               </InputLeftElement>
-              <Input placeholder="Search" ml="auto" boxShadow="base" />
+              <Input placeholder="Search" ml="auto" boxShadow="base" onChange={(e) => setSearchQuery(e.target.value)}/>
             </InputGroup>
             <HStack spacing={2}>
               <Box display={["block", null, "none"]}>

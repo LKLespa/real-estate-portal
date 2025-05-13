@@ -4,6 +4,17 @@ import { db } from "../firebaseConfig";
 import { useToast } from "@chakra-ui/react";
 import { FaLastfmSquare } from "react-icons/fa";
 
+const searchableFields = [
+  "additionalInfo",
+  "address",
+  "area",
+  "city",
+  "name",
+  "ownerName",
+  "region",
+  "status",
+  "type"
+];
 
 const PropertiesContext = createContext();
 
@@ -12,38 +23,61 @@ export const usePropertiesContext = () => useContext(PropertiesContext)
 // Todo: implement pagination (fetch more data on scroll and add to the list). Fetch 12 at a time
 export const PropertiesProvider = ({ children }) => {
   const [properties, setProperties] = useState([]);
+  const [filteredProperties, setFilteredProperties] = useState([]);
   const [fetching, setFetching] = useState(FaLastfmSquare);
   const [lastVisible, setLastVisible] = useState(null);
   const [refresh, setRefresh] = useState(0);
   const [error, setError] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+
+  const [searchQuery, setSearchQuery] = useState('');
+
   const fetchLimit = 12;
   const toast = useToast()
   const toastId = "fetch-toast"
 
   useEffect(() => {
     const fetchProperties = async () => {
-        setFetching(true);
+      setFetching(true);
       try {
-        const propertiesQuery = query(collection(db, "properties"), orderBy("dateUploaded", "desc"), limit(fetchLimit));
+        const propertiesQuery = query(
+          collection(db, "properties"),
+          orderBy("dateUploaded", "desc"),
+          limit(fetchLimit)
+        );
         const propertiesSnapshot = await getDocs(propertiesQuery);
         const propertiesData = propertiesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
         setProperties(propertiesData);
-        setLastVisible(propertiesSnapshot.docs[propertiesSnapshot.docs.length - 1])
+        setLastVisible(propertiesSnapshot.docs[propertiesSnapshot.docs.length - 1]);
+
+        // Filter properties after fetch
+        if (searchQuery.trim() !== "") {
+          const filtered = propertiesData.filter((property) =>
+            Object.entries(property).some(([key, value]) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+          );
+          setFilteredProperties(filtered);
+        } else {
+          setFilteredProperties(propertiesData);
+        }
+
       } catch (error) {
         setError(error);
         setErrorMsg(error.message);
-        if(!toast.isActive(toastId)) {
-          toast({ 
+        if (!toast.isActive(toastId)) {
+          toast({
             id: toastId,
             title: "Error fetching properties",
             description: error.message,
-            position: 'top',
-            status: 'error',
-          })
+            position: "top",
+            status: "error",
+          });
         }
       } finally {
         setFetching(false);
@@ -51,8 +85,7 @@ export const PropertiesProvider = ({ children }) => {
     };
 
     fetchProperties();
-    console.log('Refreshed', refresh)
-  }, [refresh]);
+  }, [refresh, searchQuery]);
 
   const refreshFetch = () => {
     setRefresh(prev => prev + 1)
@@ -63,44 +96,44 @@ export const PropertiesProvider = ({ children }) => {
     try {
       const nextPropertyQuery = query(collection(db, "properties"), orderBy("dateUploaded", "desc"), startAfter(lastVisible), limit(limit));
       const nextPropertiesSnapshot = await getDocs(nextPropertyQuery);
-        const nextPropertiesData = nextPropertiesSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log('nextPropertiesData', nextPropertiesData)
-        if(nextPropertiesData.length === 0) {
-          toast({
-            id: toastId,
-            title: "All properties fetched",
-            position: 'top',
-            status: 'warning',
-            duration: 3000,
-            isClosable: true,
-          })
-          return;
-        }
-        setProperties(prev => [...prev, ...nextPropertiesData]);
-        setLastVisible(nextPropertiesSnapshot.docs[nextPropertiesSnapshot.docs.length - 1])
+      const nextPropertiesData = nextPropertiesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log('nextPropertiesData', nextPropertiesData)
+      if (nextPropertiesData.length === 0) {
+        toast({
+          id: toastId,
+          title: "All properties fetched",
+          position: 'top',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        })
+        return;
+      }
+      setProperties(prev => [...prev, ...nextPropertiesData]);
+      setLastVisible(nextPropertiesSnapshot.docs[nextPropertiesSnapshot.docs.length - 1])
     } catch (err) {
       setError(error);
-        setErrorMsg(error?.message);
-        console.log('Error', error)
-        if(!toast.isActive(toastId)) {
-          toast({ 
-            id: toastId,
-            title: "Error fetching properties",
-            description: error?.message,
-            position: 'top',
-            status: 'error',
-          })
-        }
+      setErrorMsg(error?.message);
+      console.log('Error', error)
+      if (!toast.isActive(toastId)) {
+        toast({
+          id: toastId,
+          title: "Error fetching properties",
+          description: error?.message,
+          position: 'top',
+          status: 'error',
+        })
+      }
     } finally {
       setFetching(false)
     }
   }
 
   return (
-    <PropertiesContext.Provider value={{ properties, fetching, refreshFetch, error, errorMsg, fetchMore }}>
+    <PropertiesContext.Provider value={{ properties, filteredProperties, fetching, refreshFetch, error, errorMsg, fetchMore, setSearchQuery }}>
       {children}
     </PropertiesContext.Provider>
   );
