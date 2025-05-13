@@ -3,6 +3,7 @@ import React from "react";
 import PropertyCard from "../components/property_card";
 import Sidebar from "../layouts/sidebar";
 import { usePropertiesContext } from "../context/properties_context";
+import { useAuth } from "../context/auth_context";
 
 export default function HomePage() {
   const { properties, fetching, error, errorMsg, fetchMore } = usePropertiesContext();
@@ -18,7 +19,7 @@ export default function HomePage() {
         <VStack height="100%" overflowY="auto">
           <Wrap spacing="20px" justify="space-around">
             {properties.map((property) => (
-              <PropertyCard property={property} />
+              <PropertyCard property={property}/>
             ))}
           </Wrap>
           <Box padding={1} width='100%' bg='blackAlpha.50'><Center >

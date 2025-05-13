@@ -30,7 +30,7 @@ import { Link, NavLink } from "react-router-dom";
 
 import Sidebar from "./sidebar";
 import { LuBookMarked } from "react-icons/lu";
-import { BiMessage, BiSave } from "react-icons/bi";
+import { BiHeart, BiMessage, BiSave } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
 import { auth } from "../firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -48,9 +48,6 @@ export default function NavigationWrapper() {
     </Box>
     )
   }
-  if (!auth.currentUser){
-   return <Navigate to='/login' replace />
-  } 
   
   return (
     <Container maxW="100vw" bg="gray.100" h="100vh">
@@ -76,17 +73,14 @@ export default function NavigationWrapper() {
               <Input placeholder="Search" ml="auto" boxShadow="base" />
             </InputGroup>
             <HStack spacing={2}>
-              <Button display={["none", null, "block"]} leftIcon={<BiSave />} isRound>
-                Saved
-              </Button>
               <Box display={["none", "block"]}>
               <IconButton isRound >
-                <BiMessage />
+                <BiHeart />
               </IconButton>
               </Box>
-              <IconButton variant="unstyled" onClick={() => navigate('/profile')}>
+              {auth.currentUser ? <IconButton variant="unstyled" onClick={() => navigate('/profile')}>
                 <Avatar src="" height={"40px"} width={"40px"} />
-              </IconButton>
+              </IconButton> : <Button onClick={() => navigate('/register')}>Create Account</Button> }
             </HStack>
           </HStack>
         </Box>
