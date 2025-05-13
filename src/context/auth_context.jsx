@@ -8,7 +8,7 @@ import {
   getAuth,
 } from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
-import { doc, getDoc, collection, setDoc } from "firebase/firestore";
+import { doc, getDoc, collection, setDoc, onSnapshot } from "firebase/firestore";
 import { SiDblp } from "react-icons/si";
 import { useToast } from "@chakra-ui/react";
 
@@ -23,20 +23,33 @@ export const AuthProvider = ({ children }) => {
   const toast = useToast();
 
   // Wrap in use effect
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        await getUserData();
-      } else {
-        setUserData(null);
-      }
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, [auth]);
+ useEffect(() => {
+  let unsubUser = null;
 
-  const getUserData = useCallback(
-    async () => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+
+      // Start listening to user document changes
+      unsubUser = onSnapshot(userRef, (docSnap) => {
+        if (docSnap.exists()) {
+          setUserData({ id: user.uid, ...docSnap.data() });
+        }
+      });
+    } else {
+      setUserData(null);
+    }
+    setLoading(false);
+  });
+
+  return () => {
+    unsubscribe();         // Stop listening to auth state changes
+    if (unsubUser) unsubUser(); // Also stop listening to Firestore doc
+  };
+}, []);
+
+
+  const getUserData = async () => {
     if (getAuth().currentUser) {
       const id = getAuth().currentUser.uid;
       const userDocRef = doc(collection(db, "users"), id);
@@ -53,7 +66,7 @@ export const AuthProvider = ({ children }) => {
         });
       }
     }
-  }, []);
+  };
 
   // Function to sign out from Firebase
   const signOut = () => {

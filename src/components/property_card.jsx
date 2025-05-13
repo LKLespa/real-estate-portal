@@ -198,8 +198,8 @@ export default function PropertyCard({ property }) {
           View Details
         </Button>
         <IconButton
-          icon={<FaHeart />}
-          variant={isLiked ? "solid" : "ghost"}
+          icon={<FaHeart size={isLiked ? '25px' : '18px'} />}
+          variant="ghost"
           colorScheme={isLiked ? "red" : "gray"}
           aria-label="Save"
           onClick={handleToggleFavorite}
