@@ -28,11 +28,11 @@ const categories = [
         type: 'Property Status',
         categories: [
             {
-                name: 'For Sale',
+                name: 'Sale',
                 selected: false,
             },
             {
-                name: 'For Rent',
+                name: 'Rent',
                 selected: false,
             },
             {
@@ -45,15 +45,19 @@ const categories = [
         type: 'Size',
         categories: [
             {
-                name: 'Less than 500 sqft',
+                name: 'Less than 1000 sq m',
                 selected: false,
             },
             {
-                name: '500 - 1000 sqft',
+                name: '1000 - 5000 sq m',
                 selected: false,
             },
             {
-                name: '1000 - 1500 sqft',
+                name: '5000 - 15000 sq m',
+                selected: false,
+            },
+            {
+                name: '15000 + sq m',
                 selected: false,
             }
         ]
@@ -62,15 +66,27 @@ const categories = [
         type: 'Price',
         categories: [
             {
-                name: 'Less than $500',
+                name: 'Less than 10,000 FCFA',
                 selected: false,
             },
             {
-                name: '$500 - $1000',
+                name: '10,000 FCFA - 25,000 FCFA',
                 selected: false,
             },
             {
-                name: '$1000 - $1500',
+                name: '25,000 FCFA - 50,000 FCFA',
+                selected: false,
+            },
+            {
+                name: '50,000 FCFA - 100,000 FCFA',
+                selected: false,
+            },
+            {
+                name: '100,000 FCFA - 250,000 FCFA',
+                selected: false,
+            },
+            {
+                name: '250,000 FCFA +',
                 selected: false,
             }
         ]

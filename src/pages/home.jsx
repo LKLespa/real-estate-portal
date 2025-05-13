@@ -3,11 +3,12 @@ import React from "react";
 import PropertyCard from "../components/property_card";
 import Sidebar from "../layouts/sidebar";
 import { usePropertiesContext } from "../context/properties_context";
+import { useAuth } from "../context/auth_context";
 
 export default function HomePage() {
-  const { properties, fetching, error, errorMsg, fetchMore } = usePropertiesContext();
+  const { filteredProperties, fetching, error, errorMsg, fetchMore } = usePropertiesContext();
 
-  console.log('Properties', properties)
+  console.log('Properties', filteredProperties)
 
   return (
     <HStack className="content" width="100%" height='100%' align="stretch" overflowY="hidden">
@@ -17,8 +18,8 @@ export default function HomePage() {
       <Box flexGrow={1} bg="white" p={3}>
         <VStack height="100%" overflowY="auto">
           <Wrap spacing="20px" justify="space-around">
-            {properties.map((property) => (
-              <PropertyCard property={property} />
+            {filteredProperties.map((property) => (
+              <PropertyCard property={property}/>
             ))}
           </Wrap>
           <Box padding={1} width='100%' bg='blackAlpha.50'><Center >
