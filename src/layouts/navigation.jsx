@@ -40,11 +40,13 @@ import { Link, NavLink } from "react-router-dom";
 
 import Sidebar from "./sidebar";
 import { LuBookMarked } from "react-icons/lu";
-import { BiHeart, BiMessage, BiSave } from "react-icons/bi";
+import { BiHeart, BiMessage, BiSave, BiUser } from "react-icons/bi";
 import { useAuth } from "../context/auth_context";
 import { auth } from "../firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { usePropertiesContext } from "../context/properties_context";
+import { FaPerson } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 
 export default function NavigationWrapper() {
   const { userData, signOut, getUserData, loading } = useAuth();
@@ -70,13 +72,13 @@ const btnRef = React.useRef();
         <Box bg="white" width="100%" px={3} py={4}>
           <HStack justify="space-between" align="center" spacing={2}>
             <Link to="/">
-              <Heading flexShrink={0} size={["md", "lg"]} color="teal.600" display={["none", null, "block"]}>
-                Real Estate Portal
+              <Heading flexShrink={0} size={["md", "lg"]} color="purple.600" display={["none", null, "block"]}>
+                NestLink
               </Heading>
             </Link>
             <Link to="/">
-              <Heading onClick={() => navigate('/')} size={["md", "lg"]} color="teal.600" display={["block", null, "none"]}>
-                REP
+              <Heading onClick={() => navigate('/')} size={["md", "xl"]} color="purple.600" display={["block", null, "none"]}>
+                N
               </Heading>
             </Link>
             <InputGroup maxW="500px" flexShrink={1}>
@@ -123,7 +125,10 @@ const btnRef = React.useRef();
               </Box>
               {auth.currentUser ? <IconButton variant="unstyled" onClick={() => navigate('/profile')}>
                 <Avatar src="" height={"40px"} width={"40px"} />
-              </IconButton> : <Button onClick={() => navigate('/register')}>Create Account</Button>}
+              </IconButton> : <Box onClick={() => navigate('/register')}>
+                <Button display={["none", null, "block"]} >Create Account</Button>
+                <IconButton display={["block", null, "none"]} isRound variant='outline'><Center><BiUser /></Center></IconButton>
+                </Box>}
             </HStack>
           </HStack>
         </Box>

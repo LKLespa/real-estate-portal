@@ -173,7 +173,7 @@ export default function PropertyCard({ property }) {
               ? `${property.noOfRooms} ${property.noOfRooms > 1 ? "Rooms" : "Room"}`
               : `${property.area} sq m`}
           </Text>
-          <Text fontWeight="bold" color="teal.600">
+          <Text fontWeight="bold" color="purple.600">
             {property.status === "Rent"
               ? `${property.price} / ${property.installment}`
               : `${property.price}`}

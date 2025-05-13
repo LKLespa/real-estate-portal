@@ -28,7 +28,7 @@ export default function Sidebar() {
         <h2>
           <AccordionButton>
             <Box flex="1" textAlign="left">
-              <Heading size="sm" color='teal.700'>{categoryGroup.type}</Heading>
+              <Heading size="sm" color='purple.700'>{categoryGroup.type}</Heading>
             </Box>
             <AccordionIcon />
           </AccordionButton>
@@ -40,7 +40,7 @@ export default function Sidebar() {
                 as={Button}
                 variant={category.selected ? "solid" : "ghost"} 
                 width="100%"
-                bg={category.selected ? "teal.800" : "transparent" }
+                bg={category.selected ? "purple.800" : "transparent" }
                 justifyContent="start"
                 onClick={() => toggleCategory(category.name)}
               >

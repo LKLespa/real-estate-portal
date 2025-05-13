@@ -4,7 +4,7 @@ import {
   TabPanel,
   TabPanels, Tabs, Text, VStack
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiHeart, BiHome, BiMessage } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../../context/auth_context";
@@ -20,17 +20,22 @@ export default function ProfilePage() {
   const { userData, loading } = useAuth()
   const navigate = useNavigate()
 
-  if(loading) {
+  useEffect(() => {
+     if(loading) {
     return (
     <Box height='100vh' width='100vw'>
       <Center height='100%' width='100%'><Spinner /></Center>
     </Box>
     )
   }
-
-  if(!auth.currentUser){
+  
+    if(!auth.currentUser){
     navigate('/login')
   }
+  }, [])
+
+
+  console.log('Auth Exist,', !!auth.currentUser)
 
   // if(!userData) {
   //   return (<div>No user data</div>)

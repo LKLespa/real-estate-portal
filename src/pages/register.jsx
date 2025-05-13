@@ -47,7 +47,7 @@ export default function RegisterPage() {
     >
       <Box bg="white" p={10} maxW="600px">
         <VStack spacing={4}>
-          <Heading color="teal.800">Real Estate Portal</Heading>
+          <Heading color="purple.800">NESTLINK</Heading>
           <Heading as="h5" size="md"></Heading>
       <Formik
         initialValues={{
@@ -166,7 +166,7 @@ export default function RegisterPage() {
           </VStack>
 
           <Center>
-            <Button mt={4} width="200px" colorScheme="teal" type="submit" isLoading={authenticate.loading} loadingText='Submitting'>
+            <Button mt={4} width="200px" colorScheme="purple" type="submit" isLoading={authenticate.loading} loadingText='Submitting'>
               Register
             </Button>
           </Center>
@@ -174,7 +174,7 @@ export default function RegisterPage() {
       </Formik>
           <ChakraLink
             as={ReactRouterLink}
-            color="teal"
+            color="purple"
             to="/login"
             mt={4}
           >

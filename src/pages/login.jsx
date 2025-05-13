@@ -31,7 +31,7 @@ export default function LoginPage() {
       <Center h='100%'>
         <Box bg='white' p={10}>
           <VStack>
-            <Heading color='teal.800'>Real Estate Portal</Heading>
+            <Heading color='purple.800'>NESTLINK</Heading>
             <Heading as='h5' size='md'>Login</Heading>
             <Formik
               initialValues={{ email: "", password: "" }}
@@ -98,13 +98,13 @@ export default function LoginPage() {
                     </FormControl>
                   )}
                 </Field>
-                <ChakraLink as={ReactRouterLink} color='teal' to='/forgot-password' mt={4}>Forgot Password?</ChakraLink>
+                <ChakraLink as={ReactRouterLink} color='purple' to='/forgot-password' mt={4}>Forgot Password?</ChakraLink>
                 <Button mt={4} type="submit" w='100%' isLoading={authenticate.loading} loadingText='Submitting'>
                   Login
                 </Button>
               </Form>
             </Formik>
-            <ChakraLink as={ReactRouterLink} color='teal' to='/register'>Don't have an account?</ChakraLink>
+            <ChakraLink as={ReactRouterLink} color='purple' to='/register'>Don't have an account?</ChakraLink>
           </VStack>
         </Box>
       </Center>

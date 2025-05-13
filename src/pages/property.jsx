@@ -131,11 +131,11 @@ export default function PropertyPage() {
                   <Tab
                     key={index}
                     _selected={{
-                      bg: "teal.500",
+                      bg: "purple.500",
                       color: "white",
                     }}
                     _hover={{
-                      bg: "teal.200",
+                      bg: "purple.200",
                       color: "white",
                     }}
                   >
@@ -151,11 +151,11 @@ export default function PropertyPage() {
                   <Tab
                     key={"video"}
                     _selected={{
-                      bg: "teal.500",
+                      bg: "purple.500",
                       color: "white",
                     }}
                     _hover={{
-                      bg: "teal.200",
+                      bg: "purple.200",
                       color: "white",
                     }}
                   >
